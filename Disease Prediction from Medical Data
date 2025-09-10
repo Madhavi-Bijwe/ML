@@ -1,0 +1,80 @@
+# =====================================
+# TASK 4: Disease Prediction from Medical Data
+# =====================================
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+from sklearn.datasets import load_breast_cancer
+
+# Dataset Selection
+print("Select Dataset:")
+print("1. Diabetes")
+print("2. Breast Cancer")
+
+choice = input("Enter choice (1/2): ")
+
+# if choice == "1":
+    
+#     # ✅ Heart Disease dataset (working GitHub link)
+#     !wget -q -O heart.csv https://raw.githubusercontent.com/krishnaik06/Logistic-Regression/master/heart.csv
+#     df = pd.read_csv("heart.csv")
+#     X = df.drop("target", axis=1)
+#     y = df["target"]
+
+
+if choice == "1":
+    # ✅ Diabetes dataset (Pima Indians)
+    !wget -q -O diabetes.csv https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv
+    df = pd.read_csv("diabetes.csv", header=None)
+    df.columns = ["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age","Outcome"]
+    X = df.drop("Outcome", axis=1)
+    y = df["Outcome"]
+
+elif choice == "2":
+    # ✅ Breast Cancer dataset (built-in sklearn)
+    cancer = load_breast_cancer()
+    df = pd.DataFrame(cancer.data, columns=cancer.feature_names)
+    df["target"] = cancer.target
+    X = df.drop("target", axis=1)
+    y = df["target"]
+
+else:
+    print("❌ Invalid choice! Please restart and enter 1, 2 or 3.")
+    exit()
+
+print("\n✅ Dataset Loaded Successfully!")
+print(df.head())
+
+# Preprocessing
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+
+# Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Models
+
+models = {
+    "Logistic Regression": LogisticRegression(max_iter=1000),
+    "SVM": SVC(kernel="linear"),
+    "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
+    "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric="logloss")
+}
+
+# Training & Evaluation
+
+for name, model in models.items():
+    print(f"\n🔹 Training {name}...")
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+    print(f"{name} Accuracy: {acc:.4f}")
+    print(classification_report(y_test, y_pred))
