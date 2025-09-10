@@ -22,7 +22,7 @@ choice = input("Enter choice (1/2): ")
 
 # if choice == "1":
     
-#     # ✅ Heart Disease dataset (working GitHub link)
+#     #  Heart Disease dataset (working GitHub link)
 #     !wget -q -O heart.csv https://raw.githubusercontent.com/krishnaik06/Logistic-Regression/master/heart.csv
 #     df = pd.read_csv("heart.csv")
 #     X = df.drop("target", axis=1)
@@ -30,7 +30,7 @@ choice = input("Enter choice (1/2): ")
 
 
 if choice == "1":
-    # ✅ Diabetes dataset (Pima Indians)
+    # Diabetes dataset (Pima Indians)
     !wget -q -O diabetes.csv https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv
     df = pd.read_csv("diabetes.csv", header=None)
     df.columns = ["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age","Outcome"]
@@ -38,7 +38,7 @@ if choice == "1":
     y = df["Outcome"]
 
 elif choice == "2":
-    # ✅ Breast Cancer dataset (built-in sklearn)
+    # Breast Cancer dataset (built-in sklearn)
     cancer = load_breast_cancer()
     df = pd.DataFrame(cancer.data, columns=cancer.feature_names)
     df["target"] = cancer.target
@@ -46,10 +46,10 @@ elif choice == "2":
     y = df["target"]
 
 else:
-    print("❌ Invalid choice! Please restart and enter 1, 2 or 3.")
+    print(" Invalid choice! Please restart and enter 1, 2 or 3.")
     exit()
 
-print("\n✅ Dataset Loaded Successfully!")
+print("\n Dataset Loaded Successfully!")
 print(df.head())
 
 # Preprocessing
